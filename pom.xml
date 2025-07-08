@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>seebach.feuerwehr.maec</groupId>
+    <artifactId>Simularm-Feuerwehr</artifactId>
+    <version>1.0</version>
+
+    <properties>
+        <maven.compiler.source>24</maven.compiler.source>
+        <maven.compiler.target>24</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>marytts-repo</id>
+            <url>https://raw.githubusercontent.com/DFKI-MLT/Maven-Repository/main</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.twmacinta</groupId>
+            <artifactId>fast-md5</artifactId>
+            <version>2.7.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/fast-md5-2.7.1.jar</systemPath>
+        </dependency>
+
+        <!-- Jampack aus lib -->
+        <dependency>
+            <groupId>gov.nist.math</groupId>
+            <artifactId>Jampack</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/Jampack-1.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>de.dfki.mary</groupId>
+            <artifactId>voice-bits1-hsmm</artifactId>
+            <version>5.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/voice-bits1-hsmm-5.2.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+</project>
