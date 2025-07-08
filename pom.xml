@@ -30,7 +30,6 @@
             <systemPath>${project.basedir}/lib/fast-md5-2.7.1.jar</systemPath>
         </dependency>
 
-        <!-- Jampack aus lib -->
         <dependency>
             <groupId>gov.nist.math</groupId>
             <artifactId>Jampack</artifactId>
@@ -45,6 +44,14 @@
             <version>5.2</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/voice-bits1-hsmm-5.2.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>de.dfki.mary</groupId>
+            <artifactId>marytts</artifactId>
+            <version>5.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/marytts-5.2.jar</systemPath>
         </dependency>
     </dependencies>
 
