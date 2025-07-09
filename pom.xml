@@ -8,9 +8,16 @@
     <artifactId>Simularm-Feuerwehr</artifactId>
     <version>1.0</version>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.4</version> <!-- oder aktuelle Version -->
+        <relativePath/> <!-- wichtig -->
+    </parent>
+
     <properties>
-        <maven.compiler.source>24</maven.compiler.source>
-        <maven.compiler.target>24</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -22,37 +29,73 @@
     </repositories>
 
     <dependencies>
+<!--        <dependency>-->
+<!--            <groupId>com.twmacinta</groupId>-->
+<!--            <artifactId>fast-md5</artifactId>-->
+<!--            <version>2.7.1</version>-->
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${project.basedir}/lib/fast-md5-2.7.1.jar</systemPath>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>gov.nist.math</groupId>-->
+<!--            <artifactId>Jampack</artifactId>-->
+<!--            <version>1.0</version>-->
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${project.basedir}/lib/Jampack-1.0.jar</systemPath>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>de.dfki.mary</groupId>-->
+<!--            <artifactId>voice-bits1-hsmm</artifactId>-->
+<!--            <version>5.2</version>-->
+<!--            <scope>system</scope>-->
+<!--            <systemPath>${project.basedir}/lib/voice-bits1-hsmm-5.2.jar</systemPath>-->
+<!--        </dependency>-->
+
+        <!-- Webserver & REST -->
         <dependency>
-            <groupId>com.twmacinta</groupId>
-            <artifactId>fast-md5</artifactId>
-            <version>2.7.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/fast-md5-2.7.1.jar</systemPath>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- Thymeleaf Template Engine -->
         <dependency>
-            <groupId>gov.nist.math</groupId>
-            <artifactId>Jampack</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/Jampack-1.0.jar</systemPath>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <!-- Optional: DevTools für Live-Reloader -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>de.dfki.mary</groupId>
-            <artifactId>voice-bits1-hsmm</artifactId>
+            <artifactId>marytts-lang-de</artifactId>
             <version>5.2</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/voice-bits1-hsmm-5.2.jar</systemPath>
+            <systemPath>${project.basedir}/lib/marytts-lang-de-5.2.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>de.dfki.mary</groupId>
-            <artifactId>marytts</artifactId>
+            <artifactId>voice-dfki-pavoque-neutral</artifactId>
             <version>5.2</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/marytts-5.2.jar</systemPath>
+            <systemPath>${project.basedir}/lib/voice-dfki-pavoque-neutral-5.2.jar</systemPath>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
