@@ -1,0 +1,115 @@
+body {
+    background-color: rgb(26, 26, 49);
+    color: white;
+    font-family: arial;
+    font-weight: 300;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    user-select: none;
+}
+
+.left{
+    width: 30%;
+    height: 100%;
+}
+
+
+/* Queue */
+.queue{
+    top: 0%;
+    width: 30%;
+    height: 55%;
+    position: fixed;
+    display: flex;
+    justify-content: top;
+    align-items: top;
+    flex-direction: column;
+}
+
+.queue .q_title{
+    width: 100%;
+    height: 50px;
+    transition: all 0.3s;
+    background-color: rgb(34, 34, 65);
+    border-left: transparent solid 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    color: red;
+    border-bottom: 3px red solid;
+}
+
+.queue .q_title span{
+    font-size: larger;
+}
+
+.queue .q_item{
+    width: 100%;
+    height: 50px;
+    transition: all 0.3s;
+    background-color: rgb(34, 34, 65);
+    border: 1px solid transparent;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.queue .q_item:hover{
+    background-color: rgb(57, 57, 122);
+    border: 1px solid white;
+    padding-left: 3px;
+}
+
+/* Annoucements */
+
+.durchsage{
+    top: 55%;
+    width: 30%;
+    height: 40%;
+    position: fixed;
+    display: flex;
+    justify-content: top;
+    align-items: top;
+    flex-direction: column;
+}
+.durchsage .durch_title{
+    width: 100%;
+    height: 50px;
+    transition: all 0.3s;
+    background-color: rgb(34, 34, 65);
+    border-left: transparent solid 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    font-weight: bold;
+    color: red;
+    border-bottom: 3px red solid;
+}
+
+.settings{
+    top: 95%;
+    width: 30%;
+    height: 5%;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 15px;
+    background-color: rgb(34, 34, 65);
+    font-weight: bold;
+    transition: all 0.3s;
+}
+.settings img{
+    filter: invert(1);
+}
+
+
+.settings:hover a{
+    transform: scale(1.1);
+    color: red;
+
+}

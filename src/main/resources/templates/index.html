@@ -2,22 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Simularm Feuerwehr</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
 </head>
 <body>
-<h1>Geplante Alarme</h1>
 
-<ul>
-    <li th:each="alarm : ${alarms}">
-        [[${alarm.timestamp}]] - [[${alarm.text}]]
-    </li>
-</ul>
+<div class="left">
+    <div class="queue">
+        <div class="q_title">
+            <span>Kommende Alarme</span>
+        </div>
+        <div class="q_con" th:each="alarm : ${alarms}">
+            <div class="q_item">
+                [[${alarm?.timestamp}]] - [[${alarm?.text}]]
+            </div>
+        </div>
+    </div>
+    <div class="durchsage">
+        <div class="durch_title">
+            <span>Durchsage machen</span>
+        </div>
+        <form th:action="@{/alarm/start}" method="post">
+            <input type="text" name="message" placeholder="Durchsage eingeben">
+            <button type="submit">Durchsage starten</button>
+        </form>
+    </div>
+    <a class="settings" th:href="@{/settings}">
+        <span>Einstellungen</span>
+        <img th:src="@{/source/setting.png}" width="20px" height="20px">
+    </a>
+</div>
 
-<h2>Custom Alarm absetzen</h2>
-<form th:action="@{/alarm/start}" method="post">
-    <input type="text" name="message" placeholder="Alarmtext hier">
-    <button type="submit">Alarm starten</button>
-</form>
-
-<p><a th:href="@{/settings}">Zu den Einstellungen</a></p>
 </body>
 </html>
