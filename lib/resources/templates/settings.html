@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Simularm Einstellungen</title>
+</head>
+<body>
+<h1>Einstellungen</h1>
+
+<form th:action="@{/settings/save}" method="post">
+    <label>Divera API Key:
+        <input type="text" name="diveraKey" th:value="${settings.diveraKey}">
+    </label>
+    <button type="submit">Speichern</button>
+</form>
+
+<p><a th:href="@{/}">Zurück</a></p>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Simularm Feuerwehr</title>
+</head>
+<body>
+<h1>Geplante Alarme</h1>
+
+<ul>
+    <li th:each="alarm : ${alarms}">
+        [[${alarm.timestamp}]] - [[${alarm.text}]]
+    </li>
+</ul>
+
+<h2>Custom Alarm absetzen</h2>
+<form th:action="@{/alarm/start}" method="post">
+    <input type="text" name="message" placeholder="Alarmtext hier">
+    <button type="submit">Alarm starten</button>
+</form>
+
+<p><a th:href="@{/settings}">Zu den Einstellungen</a></p>
+</body>
+</html>

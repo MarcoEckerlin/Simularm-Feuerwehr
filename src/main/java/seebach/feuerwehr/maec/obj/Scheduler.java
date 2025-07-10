@@ -1,4 +1,4 @@
 package seebach.feuerwehr.maec.obj;
 
-public class Stream {
+public class Scheduler {
 }
