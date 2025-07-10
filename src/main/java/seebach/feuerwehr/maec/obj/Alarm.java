@@ -40,7 +40,7 @@ public class Alarm {
         MaryInterface maryTTS = new LocalMaryInterface();
         maryTTS.setVoice("bits1-hsmm");
 
-        File gongFile = new File("lib/gong.wav");
+        File gongFile = new File("src/main/resources/audio/gong.wav");
         playAudioFileBlocking(gongFile);
 
         String text = "Einsatz für die " + fw_name + "!" + fach_bereich + " " +  meldung + ". Es fahren: " + forces;

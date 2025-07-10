@@ -7,7 +7,7 @@ import java.net.URI;
 
 public class GUI {
 
-    private static final String ADMIN_LINK = "http://localhost:8080/";
+    private static final String ADMIN_LINK = "http://localhost:80/";
 
     public GUI(){
         JFrame frame = new JFrame("Simularm - Feuerwehr");

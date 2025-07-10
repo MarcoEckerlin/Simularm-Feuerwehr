@@ -9,10 +9,8 @@ import seebach.feuerwehr.maec.obj.GUI;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        //SpringApplication.run(Main.class, args);
-
         new Thread(() -> new GUI()).start();
-
+        SpringApplication.run(Main.class, args);
 
         //Test
         Alarm alarm = new Alarm();
