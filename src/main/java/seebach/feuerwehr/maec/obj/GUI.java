@@ -16,14 +16,14 @@ public class GUI {
 
         JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
 
-        JButton openPanel = new JButton("Alarmpanel öffnen");
+        JButton openPanel = new JButton("Steuerungs Webseite öffnen");
         JButton kill = new JButton("System Heruterfahren");
 
         openPanel.addActionListener(e -> {
             try {
                 Desktop.getDesktop().browse(URI.create(ADMIN_LINK));
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(frame, "Fehler beim Öffnen des Browsers: " + ex.getMessage());
+                JOptionPane.showMessageDialog(frame, "Fehler beim Öffnen des Browsers: " + ex.getMessage() + ". Öffne in deinem Browser die Seite " + ADMIN_LINK);
             }
         });
 

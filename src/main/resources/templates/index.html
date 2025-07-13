@@ -2,35 +2,74 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Simularm Feuerwehr</title>
-    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}" href="../static/css/index.css">
 </head>
 <body>
 
 <div class="left">
     <div class="queue">
-        <div class="q_title">
+        <div class="title">
             <span>Kommende Alarme</span>
         </div>
         <div class="q_con" th:each="alarm : ${alarms}">
             <div class="q_item">
-                [[${alarm?.timestamp}]] - [[${alarm?.text}]]
+                <div class="meldung">
+                    <span th:text="${alarm.fachBereich}">Fachbereich</span><span> - </span><span th:text="${alarm.meldung}">Meldung</span>
+                </div>
+                <div class="time">
+                    <span>Uhrzeit: </span><span th:text="${alarm.timestamp}"></span>
+                </div>
+                <div class="einheit">
+                    <span>Fahrzeuge: </span><span th:text="${alarm.forces}"></span>
+                </div>
+                <div class="location">
+                    <span>Ort: </span><span th:text="${alarm.ort}"></span>
+                </div>
             </div>
+            <div class="edit">
+                <a>
+                    <img th:src="@{/source/settings.png}">
+                </a>
+            </div>
+            <div class="delete">
+                <a>
+                    <img th:src="@{/source/settings.png}">
+                </a>
+            </div>
+        </div>
+        <div class="create">
+
         </div>
     </div>
     <div class="durchsage">
-        <div class="durch_title">
+        <div class="title">
             <span>Durchsage machen</span>
         </div>
-        <form th:action="@{/alarm/start}" method="post">
-            <input type="text" name="message" placeholder="Durchsage eingeben">
-            <button type="submit">Durchsage starten</button>
+        <form th:action="@{/alarm/druchsage}" method="post">
+            <textarea type="text" name="message" placeholder="Durchsage hier eintippen ..."  cols="40" rows="5" ></textarea>
+            <button type="submit"><span>Senden</span></button>
         </form>
     </div>
-    <a class="settings" th:href="@{/settings}">
-        <span>Einstellungen</span>
-        <img th:src="@{/source/setting.png}" width="20px" height="20px">
-    </a>
+    <div class="settings">
+        <div class="title">
+            <span>Einstellungen</span>
+        </div>
+        <form th:action="@{/alarm/settings}" method="post">
+            <input type="text" name="api-key" placeholder="Divera API-Key hier eintragen ...">
+            <button type="submit">Speichern</button>
+        </form>
+    </div>
 </div>
+<form action="/alarm/add" method="post">
+    <input type="text" name="fwName" placeholder="Feuerwehr Name" />
+    <input type="text" name="fachBereich" placeholder="Fachbereich" />
+    <input type="text" name="meldung" placeholder="Meldung" />
+    <input type="text" name="ort" placeholder="Ort" />
+    <input type="text" name="forces" placeholder="Einsatzkräfte" />
+    <input type="datetime-local" name="time">
+    <button type="submit">Alarm speichern</button>
+</form>
+
 
 </body>
 </html>

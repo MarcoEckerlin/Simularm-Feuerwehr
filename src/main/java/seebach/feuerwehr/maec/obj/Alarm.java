@@ -13,10 +13,9 @@ import java.util.concurrent.CountDownLatch;
 
 
 public class Alarm {
-    String fw_name = "Feuerwehr Seebach";
+    String fw_name;
     String fach_bereich;
     String meldung;
-    String ort;
     String forces;
 
     public void setfw_name(String args){
@@ -27,9 +26,6 @@ public class Alarm {
     }
     public void setfach_bereich(String args){
         this.fach_bereich = (args.replaceAll("", " ").trim()).replace(".", "Punkt");
-    }
-    public void setort(String args){
-        this.ort = args;
     }
     public void setforces(String args){
         this.forces = args;
