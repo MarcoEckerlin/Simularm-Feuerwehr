@@ -5,31 +5,40 @@ body {
     margin: 0;
     padding: 20px;
 }
-.top{
-    width: 100%;
-    height: 100%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    gap: 2vh;
-}
-
-.bottom{
-    width: 100%;
-    height: 100%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    gap: 2vh;
-}
 
 .container {
     max-width: 1000px;
     margin: 0 auto;
 }
-header{
+
+.hidden {
+    display: none !important;
+}
+
+.popup {
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 500;
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 1rem;
+}
+
+/* content */
+
+header {
     margin-bottom: 30px;
 }
 
@@ -41,16 +50,16 @@ header h1 {
 
 header p {
     text-align: center;
-    color: #cbd5e1; /* slate-400 */
+    color: #cbd5e1;
+    /* slate-400 */
     margin-top: 0;
 }
 
 section {
-    margin-bottom: 30px;
     background-color: rgb(30 41 59 / var(--tw-bg-opacity, 1));
     border-radius: 1.5vh;
-    height: 400px;
     width: 300px;
+    padding-bottom: 1vh;
 }
 
 section h2 {
@@ -66,15 +75,20 @@ section h2 {
     border-top-right-radius: 1.5vh;
 }
 
+
 .alarm-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-bottom: 1vh;
 }
 
 .alarm-item {
-    background-color: #475569; /* slate-600 */
-    padding: 10px;
+    background-color: #475569;
+    /* slate-600 */
+    padding: 1vh;
+    margin-left: 1vh;
+    margin-right: 1vh;
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
@@ -83,76 +97,95 @@ section h2 {
 
 .alarm-info {
     max-width: 70%;
+    color:white;
+}
+
+.alarm-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1vh;
 }
 
 .alarm-actions form {
     margin-left: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1vh;
 }
 
-.alarm-actions .edit{
-    background-color: #6d6d6d; /* orange-500 */
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9em;
-}
-
-.alarm-actions .edit:hover {
-    background-color: #333333; /* orange-600 */
-}
-
-.alarm-actions .delete{
-    background-color: #ff0000; /* orange-500 */
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9em;
-}
-
-.alarm-actions .delete:hover {
-    background-color: #b40000; /* orange-600 */
-}
 
 
 form input,
 form textarea {
-    width: calc(100% - 20px);
+    width: calc(100% - 20px - 2vh);
     padding: 10px;
     margin-bottom: 10px;
-    background-color: #475569; /* slate-600 */
+    background-color: #475569;
     color: white;
     border: none;
     border-radius: 8px;
+    margin-left: 1vh;
+    margin-right: 1vh;
 }
 
-form button {
-    width: 100%;
+button {
+    width: calc(100% - 2vh);
     padding: 10px;
-    background-color: rgb(239 68 68 / var(--tw-text-opacity, 1)); /* red-500 */
+    background-color: rgb(239 68 68 / var(--tw-text-opacity, 1));
+    /* red-500 */
     color: white;
     border: none;
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
+    margin-left: 1vh;
+    margin-right: 1vh;
 }
 
-form button:hover {
-    background-color: #e11d48; /* red-600 */
+button:hover {
+    filter: brightness(0.9);
+}
+
+
+.green{
+    background-color: rgb(0, 190, 0);
+}
+.orange{
+    background-color: orange;
+}
+.gray{
+    background-color: gray;
+}
+.red{
+    background-color: red;
+}
+
+
+.bottom{
+    width: 100%;
+    bottom: 0px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5vh;
+    padding-bottom: 1vh;
+    padding-top: 1vh;
+}
+
+.bottom form{
+    width: calc((3*300px) + (2*2vh));
 }
 
 /* Extra kleine Anpassungen */
 textarea {
-    resize: vertical;
+    resize: none;
 }
 
 p {
     margin: 0;
 }
 
-.new-alarm{
-    width: calc((3*300px) + (2*2vh));
-}

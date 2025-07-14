@@ -16,7 +16,6 @@ public class Core {
     private String ort;
     private String forces;
     private LocalDateTime timestamp;
-
     // Getter, Setter, Konstruktoren
     public Core() {}
 
@@ -55,6 +54,14 @@ public class Core {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getid(){
+        return id;
     }
 
     public String getFachBereich() {

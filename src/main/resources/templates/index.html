@@ -15,11 +15,11 @@
         </header>
 
         <!-- Kommende Alarme -->
-        <div class="top">
+        <div class="main">
             <section class="alarms">
                 <h2>🚨 Kommende Alarme</h2>
                 <div class="alarm-list" th:if="${alarms}">
-                    <div class="alarm-item" th:each="alarm : ${alarms}">
+                    <div class="alarm-item" th:each="alarm : ${alarms}" th:data-id="${alarm.id}" th:data-fwname="${alarm.fwName}" th:data-fachbereich="${alarm.fachBereich}" th:data-meldung="${alarm.meldung}" th:data-ort="${alarm.ort}" th:data-forces="${alarm.forces}" th:data-timestamp="${alarm.timestamp}">
                         <div class="alarm-info">
                             <strong th:text="${alarm.fachBereich}">Fachbereich</strong> -
                             <span th:text="${alarm.meldung}">Meldung</span>
@@ -34,41 +34,37 @@
                             </div>
                         </div>
                         <div class="alarm-actions">
-                            <form th:action="@{/alarm/edit/{id}(id=${alarm.id})}" method="get">
-                                <button class="edit" type="submit">✏️</button>
-                            </form>
-                            <form th:action="@{/alarm/delete/{id}(id=${alarm.id})}" method="post">
-                                <button class="delete" type="submit">🗑️</button>
-                            </form>
+                            <button class="edit orange" type="button" th:data-id="${alarm.id}" onclick="openModal('edit', this.getAttribute('data-id'))">✏️</button>
+                            <button class="delete red" type="button" th:data-id="${alarm.id}" onclick="openModal('delete', this.getAttribute('data-id'))">🗑️</button>
                         </div>
                     </div>
                 </div>
-                <p th:if="${#lists.isEmpty(alarms)}">Keine Alarme vorhanden.</p>
+                <button onclick="openModal('create')" class="green">➕ Alarm erstellen</button>
             </section>
 
             <!-- Durchsage machen -->
             <section class="durchsage">
                 <h2>📢 Durchsage machen</h2>
                 <form th:action="@{/alarm/durchsage}" method="post">
-                    <textarea name="message" placeholder="Durchsage hier eintippen ..." cols="40" rows="4"
+                    <textarea name="message" placeholder="Durchsage hier eintippen ..." cols="40" rows="15"
                         required></textarea>
-                    <button type="submit">Senden</button>
+                    <button type="submit" class="green">📩 Senden</button>
                 </form>
             </section>
 
             <!-- Einstellungen -->
             <section class="settings">
                 <h2>⚙️ Einstellungen</h2>
-                <form th:action="@{/alarm/settings}" method="post">
-                    <input type="text" name="apiKey" placeholder="Divera API-Key hier eintragen ..." required />
-                    <button type="submit">Speichern</button>
-                </form>
+                <button onclick="openModal('settings')" class="green">Einstellungen öffnen</button>
             </section>
 
         </div>
-        <!-- Neuen Alarm hinzufügen -->
-        <div class="bottom">
-            <section class="new-alarm">
+
+    </div>
+    <!-- Modals -->
+
+    <div class="popup hidden" id="popup">
+        <section class="new-alarm hidden" id="create">
             <h2>➕ Neuen Alarm hinzufügen</h2>
             <form th:action="@{/alarm/add}" method="post">
                 <input type="text" name="fwName" placeholder="Feuerwehr Name" required />
@@ -77,13 +73,71 @@
                 <input type="text" name="ort" placeholder="Ort" required />
                 <input type="text" name="forces" placeholder="Einsatzkräfte" required />
                 <input type="datetime-local" name="time" required />
-                <button type="submit">Alarm speichern</button>
+                <div class="bottom">
+                    <button onclick="closeModal('create')" class="gray">❌Abbrechen</button>
+                    <button type="submit" onclick="closeModal('create')" class="green">✅ Erstellen</button>
+                </div>
             </form>
         </section>
-        </div>
-
+        <section class="edit-alarm hidden" id="edit">
+            <h2>✏️ Alarm bearbeiten</h2>
+            <form th:action="@{/alarm/edit}" method="post">
+                <input type="text" name="fwName" placeholder="Feuerwehr Name" required />
+                <input type="text" name="fachBereich" placeholder="Fachbereich" required />
+                <input type="text" name="meldung" placeholder="Meldung" required />
+                <input type="text" name="ort" placeholder="Ort" required />
+                <input type="text" name="forces" placeholder="Einsatzkräfte" required />
+                <input type="datetime-local" name="time" required />
+                <input type="hidden" name="id" id="edit-id">
+                <div class="bottom">
+                    <button type="button" onclick="closeModal('edit')" class="gray">❌Abbrechen</button>
+                    <button type="submit" onclick="closeModal('edit')" class="green">💾 Speichern</button>
+                </div>
+            </form>
+        </section>
+        <section class="delete-alarm hidden" id="delete">
+            <h2>🗑️ Alarm löschen </h2>
+            <form th:action="@{/alarm/delete}" method="post">
+                <input type="hidden" name="id" id="delete-id">
+                <div class="bottom">
+                    <button type="button"  onclick="closeModal('delete')" class="gray">❌Abbrechen</button>
+                    <button type="submit" onclick="closeModal('delete')" class="red">🚫 Löschen</button>
+                </div>
+            </form>
+        </section>
+        <section class="settings hidden" id="settings">
+            <h2>⚙️ Einstellungen</h2>
+            <form th:action="@{/alarm/settings}" method="post">
+                <input type="text" name="divera-api-key" placeholder="Divera-api-key" />
+                <div class="bottom">
+                    <button type="button" onclick="closeModal('settings')" class="gray">❌Abbrechen</button>
+                    <button type="submit" onclick="closeModal('settings')" class="green">💾 Speichern</button>
+                </div>
+            </form>
+        </section>
     </div>
-
 </body>
+<script>
+    function openModal(id, alarmId) {
+    document.getElementById(id).classList.remove('hidden');
+    document.getElementById('popup').classList.remove('hidden');
+
+    if (alarmId) {
+        if (id === 'edit') {
+            document.getElementById('edit-id').value = alarmId;
+        }
+        if (id === 'delete') {
+            document.getElementById('delete-id').value = alarmId;
+        }
+    }
+}
+
+function closeModal(id) {
+    document.getElementById(id).classList.add('hidden');
+    document.getElementById('popup').classList.add('hidden');
+}
+
+
+</script>
 
 </html>

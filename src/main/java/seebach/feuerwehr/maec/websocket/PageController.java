@@ -6,12 +6,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import seebach.feuerwehr.maec.obj.Alarm;
 import seebach.feuerwehr.maec.obj.Durchsage;
 import seebach.feuerwehr.maec.service.Core;
 import seebach.feuerwehr.maec.service.CoreService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PageController {
@@ -23,7 +25,6 @@ public class PageController {
         List<Core> alarms = coreService.getAll();
 
         model.addAttribute("alarms", alarms);
-
         return "index";
     }
 
@@ -50,6 +51,36 @@ public class PageController {
         if (!(core.toString().length() <= 0)){
             coreService.save(core);
             System.out.println(coreService.getAll());
+        }
+        return "redirect:/";
+
+    }
+
+    @PostMapping("/alarm/edit")
+    public String editAlarm(@RequestParam String fwName,
+                           @RequestParam String fachBereich,
+                           @RequestParam String meldung,
+                           @RequestParam String ort,
+                           @RequestParam String forces,
+                           @RequestParam String time,
+                            @RequestParam String id) {
+        LocalDateTime alarmTime = LocalDateTime.parse(time);
+        Core core = new Core(fwName, fachBereich, meldung, ort, forces, alarmTime);
+        long alarmId = Long.parseLong(id);
+        Optional<Core> alarm = coreService.getId(alarmId);
+        if (alarm.isPresent()){
+            coreService.write(alarmId, core);
+        }
+        return "redirect:/";
+
+    }
+
+    @PostMapping("/alarm/delete")
+    public String deleteAlarm(@RequestParam String id) {
+        long alarmId = Long.parseLong(id);
+        Optional<Core> alarm = coreService.getId(alarmId);
+        if (alarm.isPresent()){
+            coreService.delete(alarmId);
         }
         return "redirect:/";
 
