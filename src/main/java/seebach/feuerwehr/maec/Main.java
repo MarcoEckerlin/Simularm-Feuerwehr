@@ -31,6 +31,9 @@ public class Main {
                 System.setProperty("server.port", portValue);
             }
         }
+
+        SpringApplication.run(Main.class, args);
+
         // Standard Information und Test des System
         Durchsage durchsage = new Durchsage();
         durchsage.senden("Information, das Melde System ist gestartet und bereit!");
@@ -44,7 +47,6 @@ public class Main {
 //        alarm.setforces("Seebach 42, Seebach 41, Seebach 19");
 //        alarm.run();
 
-        SpringApplication.run(Main.class, args);
     }
     private static boolean isRestartThread() {
         // check ob im DevTools Restart-Thread

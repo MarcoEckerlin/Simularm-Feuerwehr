@@ -19,8 +19,6 @@ public class PageController {
     private CoreService coreService;
 
     @GetMapping("/")
-
-
     public String index(Model model) {
         List<Core> alarms = coreService.getAll();
 

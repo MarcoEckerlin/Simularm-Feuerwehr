@@ -1,75 +1,89 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Simularm Feuerwehr</title>
     <link rel="stylesheet" th:href="@{/css/index.css}" href="../static/css/index.css">
 </head>
+
 <body>
 
-<div class="left">
-    <div class="queue">
-        <div class="title">
-            <span>Kommende Alarme</span>
-        </div>
-        <div class="q_con" th:each="alarm : ${alarms}">
-            <div class="q_item">
-                <div class="meldung">
-                    <span th:text="${alarm.fachBereich}">Fachbereich</span><span> - </span><span th:text="${alarm.meldung}">Meldung</span>
+    <div class="container">
+        <header>
+            <h1>🚒 Simularm Feuerwehr</h1>
+            <p>Einsatzleitsystem für Feuerwehr-Simulationen</p>
+        </header>
+
+        <!-- Kommende Alarme -->
+        <div class="top">
+            <section class="alarms">
+                <h2>🚨 Kommende Alarme</h2>
+                <div class="alarm-list" th:if="${alarms}">
+                    <div class="alarm-item" th:each="alarm : ${alarms}">
+                        <div class="alarm-info">
+                            <strong th:text="${alarm.fachBereich}">Fachbereich</strong> -
+                            <span th:text="${alarm.meldung}">Meldung</span>
+                            <div>
+                                🕒 Uhrzeit: <span th:text="${alarm.timestamp}">Zeit</span>
+                            </div>
+                            <div>
+                                🚒 Fahrzeuge: <span th:text="${alarm.forces}">Einheiten</span>
+                            </div>
+                            <div>
+                                📍 Ort: <span th:text="${alarm.ort}">Ort</span>
+                            </div>
+                        </div>
+                        <div class="alarm-actions">
+                            <form th:action="@{/alarm/edit/{id}(id=${alarm.id})}" method="get">
+                                <button class="edit" type="submit">✏️</button>
+                            </form>
+                            <form th:action="@{/alarm/delete/{id}(id=${alarm.id})}" method="post">
+                                <button class="delete" type="submit">🗑️</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div class="time">
-                    <span>Uhrzeit: </span><span th:text="${alarm.timestamp}"></span>
-                </div>
-                <div class="einheit">
-                    <span>Fahrzeuge: </span><span th:text="${alarm.forces}"></span>
-                </div>
-                <div class="location">
-                    <span>Ort: </span><span th:text="${alarm.ort}"></span>
-                </div>
-            </div>
-            <div class="edit">
-                <a>
-                    <img th:src="@{/source/settings.png}">
-                </a>
-            </div>
-            <div class="delete">
-                <a>
-                    <img th:src="@{/source/settings.png}">
-                </a>
-            </div>
-        </div>
-        <div class="create">
+                <p th:if="${#lists.isEmpty(alarms)}">Keine Alarme vorhanden.</p>
+            </section>
+
+            <!-- Durchsage machen -->
+            <section class="durchsage">
+                <h2>📢 Durchsage machen</h2>
+                <form th:action="@{/alarm/durchsage}" method="post">
+                    <textarea name="message" placeholder="Durchsage hier eintippen ..." cols="40" rows="4"
+                        required></textarea>
+                    <button type="submit">Senden</button>
+                </form>
+            </section>
+
+            <!-- Einstellungen -->
+            <section class="settings">
+                <h2>⚙️ Einstellungen</h2>
+                <form th:action="@{/alarm/settings}" method="post">
+                    <input type="text" name="apiKey" placeholder="Divera API-Key hier eintragen ..." required />
+                    <button type="submit">Speichern</button>
+                </form>
+            </section>
 
         </div>
-    </div>
-    <div class="durchsage">
-        <div class="title">
-            <span>Durchsage machen</span>
+        <!-- Neuen Alarm hinzufügen -->
+        <div class="bottom">
+            <section class="new-alarm">
+            <h2>➕ Neuen Alarm hinzufügen</h2>
+            <form th:action="@{/alarm/add}" method="post">
+                <input type="text" name="fwName" placeholder="Feuerwehr Name" required />
+                <input type="text" name="fachBereich" placeholder="Fachbereich" required />
+                <input type="text" name="meldung" placeholder="Meldung" required />
+                <input type="text" name="ort" placeholder="Ort" required />
+                <input type="text" name="forces" placeholder="Einsatzkräfte" required />
+                <input type="datetime-local" name="time" required />
+                <button type="submit">Alarm speichern</button>
+            </form>
+        </section>
         </div>
-        <form th:action="@{/alarm/druchsage}" method="post">
-            <textarea type="text" name="message" placeholder="Durchsage hier eintippen ..."  cols="40" rows="5" ></textarea>
-            <button type="submit"><span>Senden</span></button>
-        </form>
-    </div>
-    <div class="settings">
-        <div class="title">
-            <span>Einstellungen</span>
-        </div>
-        <form th:action="@{/alarm/settings}" method="post">
-            <input type="text" name="api-key" placeholder="Divera API-Key hier eintragen ...">
-            <button type="submit">Speichern</button>
-        </form>
-    </div>
-</div>
-<form action="/alarm/add" method="post">
-    <input type="text" name="fwName" placeholder="Feuerwehr Name" />
-    <input type="text" name="fachBereich" placeholder="Fachbereich" />
-    <input type="text" name="meldung" placeholder="Meldung" />
-    <input type="text" name="ort" placeholder="Ort" />
-    <input type="text" name="forces" placeholder="Einsatzkräfte" />
-    <input type="datetime-local" name="time">
-    <button type="submit">Alarm speichern</button>
-</form>
 
+    </div>
 
 </body>
+
 </html>
