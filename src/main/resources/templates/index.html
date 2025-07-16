@@ -1,75 +1,171 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Simularm Feuerwehr</title>
     <link rel="stylesheet" th:href="@{/css/index.css}" href="../static/css/index.css">
 </head>
+
 <body>
 
-<div class="left">
-    <div class="queue">
-        <div class="title">
-            <span>Kommende Alarme</span>
-        </div>
-        <div class="q_con" th:each="alarm : ${alarms}">
-            <div class="q_item">
-                <div class="meldung">
-                    <span th:text="${alarm.fachBereich}">Fachbereich</span><span> - </span><span th:text="${alarm.meldung}">Meldung</span>
+    <div class="container">
+        <header>
+            <h1>🚒 Simularm Feuerwehr</h1>
+            <p>Einsatzleitsystem für Feuerwehr-Simulationen</p>
+        </header>
+
+        <!-- Kommende Alarme -->
+        <div class="main">
+            <section class="alarms">
+                <h2>🚨 Kommende Alarme</h2>
+                <div class="alarm-list" th:if="${alarms}">
+                    <div class="alarm-item" th:each="alarm : ${alarms}" th:data-id="${alarm.id}">
+                        <div class="alarm-info">
+                            <div>
+                                <strong th:text="${alarm.fachBereich}">Fachbereich</strong> -
+                                <span th:text="${alarm.meldung}">Meldung</span>
+                            </div>
+                            <div>
+                                🕒 Zeit: <span
+                                    th:text="${#temporals.format(alarm.timestamp, 'dd. MMMM yyyy, HH:mm')}">Zeit</span>
+                            </div>
+                            <div>
+                                🚒 Fahrzeuge: <span th:text="${alarm.forces}">Einheiten</span>
+                            </div>
+                            <div>
+                                📍 Ort: <span th:text="${alarm.ort}">Ort</span>
+                            </div>
+                        </div>
+                        <div class="alarm-actions">
+                            <button class="edit orange" type="button" th:data-id="${alarm.id}" onclick="loadAlarmData(this.getAttribute('data-id'))">✏️</button>
+                            <button class="delete red" type="button" th:data-id="${alarm.id}" onclick="openModal('delete', this.getAttribute('data-id'))">🗑️</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="time">
-                    <span>Uhrzeit: </span><span th:text="${alarm.timestamp}"></span>
-                </div>
-                <div class="einheit">
-                    <span>Fahrzeuge: </span><span th:text="${alarm.forces}"></span>
-                </div>
-                <div class="location">
-                    <span>Ort: </span><span th:text="${alarm.ort}"></span>
-                </div>
-            </div>
-            <div class="edit">
-                <a>
-                    <img th:src="@{/source/settings.png}">
-                </a>
-            </div>
-            <div class="delete">
-                <a>
-                    <img th:src="@{/source/settings.png}">
-                </a>
-            </div>
-        </div>
-        <div class="create">
+                <button onclick="openModal('create')" class="green">➕ Alarm erstellen</button>
+            </section>
+
+            <!-- Durchsage machen -->
+            <section class="durchsage">
+                <h2>📢 Durchsage machen</h2>
+                <form th:action="@{/alarm/durchsage}" method="post">
+                    <textarea name="message" placeholder="Durchsage hier eintippen ..." cols="40" rows="15"
+                        required></textarea>
+                    <button type="submit" class="green">📩 Senden</button>
+                </form>
+            </section>
+
+            <!-- Einstellungen -->
+            <section class="settings">
+                <h2>⚙️ Einstellungen</h2>
+                <button onclick="openModal('settings')" class="green">Einstellungen öffnen</button>
+            </section>
 
         </div>
-    </div>
-    <div class="durchsage">
-        <div class="title">
-            <span>Durchsage machen</span>
-        </div>
-        <form th:action="@{/alarm/druchsage}" method="post">
-            <textarea type="text" name="message" placeholder="Durchsage hier eintippen ..."  cols="40" rows="5" ></textarea>
-            <button type="submit"><span>Senden</span></button>
-        </form>
-    </div>
-    <div class="settings">
-        <div class="title">
-            <span>Einstellungen</span>
-        </div>
-        <form th:action="@{/alarm/settings}" method="post">
-            <input type="text" name="api-key" placeholder="Divera API-Key hier eintragen ...">
-            <button type="submit">Speichern</button>
-        </form>
-    </div>
-</div>
-<form action="/alarm/add" method="post">
-    <input type="text" name="fwName" placeholder="Feuerwehr Name" />
-    <input type="text" name="fachBereich" placeholder="Fachbereich" />
-    <input type="text" name="meldung" placeholder="Meldung" />
-    <input type="text" name="ort" placeholder="Ort" />
-    <input type="text" name="forces" placeholder="Einsatzkräfte" />
-    <input type="datetime-local" name="time">
-    <button type="submit">Alarm speichern</button>
-</form>
 
+    </div>
+    <!-- Modals -->
 
+    <div class="popup hidden" id="popup">
+        <section class="new-alarm hidden" id="create">
+            <h2>➕ Neuen Alarm hinzufügen</h2>
+            <form th:action="@{/alarm/add}" method="post">
+                <input type="text" name="fwName" placeholder="Feuerwehr Name" required />
+                <input type="text" name="fachBereich" placeholder="Fachbereich" required />
+                <input type="text" name="meldung" placeholder="Meldung" required />
+                <input type="text" name="ort" placeholder="Ort" required />
+                <input type="text" name="forces" placeholder="Einsatzkräfte" required />
+                <input type="datetime-local" name="time" required />
+                <div class="bottom">
+                    <button onclick="closeModal('create')" class="gray">❌Abbrechen</button>
+                    <button type="submit" onclick="closeModal('create')" class="green">✅ Erstellen</button>
+                </div>
+            </form>
+        </section>
+        <section class="edit-alarm hidden" id="edit">
+            <h2>✏️ Alarm bearbeiten</h2>
+            <form th:action="@{/alarm/edit}" method="post">
+                <input type="text" name="fwName" placeholder="Feuerwehr Name" required />
+                <input type="text" name="fachBereich" placeholder="Fachbereich" required />
+                <input type="text" name="meldung" placeholder="Meldung" required />
+                <input type="text" name="ort" placeholder="Ort" required />
+                <input type="text" name="forces" placeholder="Einsatzkräfte" required />
+                <input type="datetime-local" name="time" required />
+                <input type="hidden" name="id" id="edit-id">
+                <div class="bottom">
+                    <button type="button" onclick="closeModal('edit')" class="gray">❌Abbrechen</button>
+                    <button type="submit" onclick="closeModal('edit')" class="green">💾 Speichern</button>
+                </div>
+            </form>
+        </section>
+        <section class="delete-alarm hidden" id="delete">
+            <h2>🗑️ Alarm löschen </h2>
+            <form th:action="@{/alarm/delete}" method="post">
+                <input type="hidden" name="id" id="delete-id">
+                <div class="bottom">
+                    <button type="button" onclick="closeModal('delete')" class="gray">❌Abbrechen</button>
+                    <button type="submit" onclick="closeModal('delete')" class="red">🚫 Löschen</button>
+                </div>
+            </form>
+        </section>
+        <section class="settings hidden" id="settings">
+            <h2>⚙️ Einstellungen</h2>
+            <form th:action="@{/alarm/settings}" method="post">
+                <input type="text" name="divera-api-key" placeholder="Divera-api-key" />
+                <div class="bottom">
+                    <button type="button" onclick="closeModal('settings')" class="gray">❌Abbrechen</button>
+                    <button type="submit" onclick="closeModal('settings')" class="green">💾 Speichern</button>
+                </div>
+            </form>
+        </section>
+    </div>
 </body>
+<script>
+    function openModal(id, alarmId) {
+        document.getElementById(id).classList.remove('hidden');
+        document.getElementById('popup').classList.remove('hidden');
+
+        if (alarmId) {
+            if (id === 'edit') {
+                document.getElementById('edit-id').value = alarmId;
+            }
+            if (id === 'delete') {
+                document.getElementById('delete-id').value = alarmId;
+            }
+        }
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.add('hidden');
+        document.getElementById('popup').classList.add('hidden');
+    }
+
+    function loadAlarmData(id) {
+        fetch(`/alarm/api/${id}`)
+            .then(response => response.json())
+            .then(alarm => {
+                if (!alarm.id) {
+                    console.error("API returned no ID!" + id);
+                    return;
+                }
+                const editSection = document.getElementById('edit');
+
+                editSection.querySelector('input[name="fwName"]').value = alarm.fwName;
+                editSection.querySelector('input[name="fachBereich"]').value = alarm.fachBereich;
+                editSection.querySelector('input[name="meldung"]').value = alarm.meldung;
+                editSection.querySelector('input[name="ort"]').value = alarm.ort;
+                editSection.querySelector('input[name="forces"]').value = alarm.forces;
+                editSection.querySelector('input[name="time"]').value = alarm.timestamp.slice(0, 16);
+                document.getElementById('edit-id').value = alarm.id;
+
+
+                openModal('edit');
+            });
+
+    }
+
+
+
+</script>
+
 </html>

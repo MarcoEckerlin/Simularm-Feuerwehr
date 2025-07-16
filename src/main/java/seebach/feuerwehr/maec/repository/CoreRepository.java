@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface CoreRepository extends JpaRepository<Core, Long> {
-    List<Core> findByTimestamp(LocalDateTime timestamp);
+    List<Core> findByTimestampBeforeAndActiveFalse(LocalDateTime time);
+
 }
 

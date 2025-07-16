@@ -14,7 +14,7 @@ public class Divera {
               "number": "2025-00001",
               "priority": true,
               "title": "Probealarm Lagerhalle",
-              "text": "Starke Rauchentwicklung im Serverraum.",
+              "text": "Test.",
               "address": "Teststraße 12, 54321 Beispielstadt",
               "lat": 50.123456,
               "lng": 8.654321
