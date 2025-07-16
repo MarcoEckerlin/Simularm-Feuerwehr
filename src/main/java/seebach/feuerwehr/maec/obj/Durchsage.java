@@ -9,6 +9,9 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.concurrent.CountDownLatch;
 
 @Controller
@@ -19,9 +22,8 @@ public class Durchsage {
         MaryInterface maryTTS = new LocalMaryInterface();
         maryTTS.setVoice("bits1-hsmm");
 
-
-        File gongFile = new File("src/main/resources/audio/info.wav");
-        playAudioFileBlocking(gongFile);
+        InputStream is = getClass().getClassLoader().getResourceAsStream("audio/info.wav");
+        playAudioFileBlocking(is);
 
         String text = message;
         AudioInputStream ttsAudio = maryTTS.generateAudio(text);
@@ -29,8 +31,23 @@ public class Durchsage {
         playAudioStreamBlocking(ttsAudio);
     }
 
-    private void playAudioFileBlocking(File audioFile) throws Exception {
-        AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+    private void playAudioFileBlocking(InputStream audioFile) throws Exception {
+        if (audioFile == null) {
+            throw new FileNotFoundException("Audio resource not found!");
+        }
+
+        File tempFile = File.createTempFile("audio-", ".wav");
+        tempFile.deleteOnExit();
+
+        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+            byte[] buffer = new byte[4096];
+            int length;
+            while ((length = audioFile.read(buffer)) != -1) {
+                fos.write(buffer, 0, length);
+            }
+        }
+
+        AudioInputStream audioStream = AudioSystem.getAudioInputStream(tempFile);
         playAudioStreamBlocking(audioStream);
     }
 

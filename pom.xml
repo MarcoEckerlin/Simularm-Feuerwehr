@@ -15,6 +15,7 @@
         <relativePath/> <!-- wichtig -->
     </parent>
 
+
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -50,27 +51,45 @@
         </dependency>
 
         <dependency>
-            <groupId>de.dfki.mary</groupId>
-            <artifactId>marytts</artifactId>
-            <version>5.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.codehaus.groovy</groupId>
-                    <artifactId>groovy</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>custom.local</groupId>
+            <artifactId>fast-md5</artifactId>
+            <version>2.7.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>custom.local</groupId>
+            <artifactId>jampack</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.dfki.mary</groupId>
+            <artifactId>marytts-client</artifactId>
+            <version>5.2</version>
+        </dependency>
+
         <dependency>
             <groupId>de.dfki.mary</groupId>
             <artifactId>marytts-lang-de</artifactId>
             <version>5.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>de.dfki.mary</groupId>
+            <artifactId>marytts-runtime</artifactId>
+            <version>5.2</version>
+        </dependency>
+
         <dependency>
             <groupId>de.dfki.mary</groupId>
             <artifactId>voice-bits1-hsmm</artifactId>
             <version>5.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/voice-bits1-hsmm-5.2.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>de.dfki.mary</groupId>
+            <artifactId>voice-dfki-pavoque-neutral-hsmm</artifactId>
+            <version>5.2</version>
         </dependency>
 
 <!--        <dependency>-->
@@ -109,6 +128,7 @@
                     <target>24</target>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 

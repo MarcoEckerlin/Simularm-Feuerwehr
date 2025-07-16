@@ -2,13 +2,12 @@ package seebach.feuerwehr.maec.obj;
 
 import marytts.LocalMaryInterface;
 import marytts.MaryInterface;
-import marytts.exceptions.MaryConfigurationException;
-import marytts.exceptions.SynthesisException;
 
 import javax.sound.sampled.*;
 import java.io.File;
-import java.io.IOException;
-import java.io.SequenceInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.concurrent.CountDownLatch;
 
 
@@ -36,8 +35,8 @@ public class Alarm {
         MaryInterface maryTTS = new LocalMaryInterface();
         maryTTS.setVoice("bits1-hsmm");
 
-        File gongFile = new File("src/main/resources/audio/gong.wav");
-        playAudioFileBlocking(gongFile);
+        InputStream is = getClass().getClassLoader().getResourceAsStream("audio/gong.wav");
+        playAudioFileBlocking(is);
 
         String text = "Einsatz für die " + fw_name + "!" + fach_bereich + " " +  meldung + ". Es fahren: " + forces;
         AudioInputStream ttsAudio = maryTTS.generateAudio(text);
@@ -46,8 +45,23 @@ public class Alarm {
         return true;
     }
 
-    private void playAudioFileBlocking(File audioFile) throws Exception {
-        AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+    private void playAudioFileBlocking(InputStream audioFile) throws Exception {
+        if (audioFile == null) {
+            throw new FileNotFoundException("Audio resource not found!");
+        }
+
+        File tempFile = File.createTempFile("audio-", ".wav");
+        tempFile.deleteOnExit();
+
+        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+            byte[] buffer = new byte[4096];
+            int length;
+            while ((length = audioFile.read(buffer)) != -1) {
+                fos.write(buffer, 0, length);
+            }
+        }
+
+        AudioInputStream audioStream = AudioSystem.getAudioInputStream(tempFile);
         playAudioStreamBlocking(audioStream);
     }
 

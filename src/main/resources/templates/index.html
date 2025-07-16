@@ -19,7 +19,7 @@
             <section class="alarms">
                 <h2>🚨 Kommende Alarme</h2>
                 <div class="alarm-list" th:if="${alarms}">
-                    <div class="alarm-item" th:each="alarm : ${alarms}" th:data-id="${alarm.id}">
+                    <div class="alarm-item" th:each="alarm : ${alarms}" th:data-id="${alarm.id}" th:data-active="${alarm.active}">
                         <div class="alarm-info">
                             <div>
                                 <strong th:text="${alarm.fachBereich}">Fachbereich</strong> -
@@ -121,6 +121,16 @@
     </div>
 </body>
 <script>
+    setInterval(() => {
+        const alarmItems = document.querySelectorAll('.alarm-item');
+        alarmItems.forEach(div => {
+            const isActive = div.getAttribute('data-active') === 'true';
+            if (isActive) {
+                div.classList.add('blocked');
+            }
+        });
+    }, 10);
+
     function openModal(id, alarmId) {
         document.getElementById(id).classList.remove('hidden');
         document.getElementById('popup').classList.remove('hidden');
