@@ -16,6 +16,10 @@ public class Core {
     private String ort;
     private String forces;
     private LocalDateTime timestamp;
+
+    @Column(nullable = false)
+    private boolean active = false;
+
     // Getter, Setter, Konstruktoren
     public Core() {}
 
@@ -40,9 +44,6 @@ public class Core {
         this.fwName = fwName;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public void setMeldung(String meldung) {
         this.meldung = meldung;
@@ -58,10 +59,6 @@ public class Core {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public long getid(){
-        return id;
     }
 
     public String getFachBereich() {
@@ -90,5 +87,28 @@ public class Core {
 
     public String getOrt() {
         return ort;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Core{" +
+                "id=" + id +
+                ", fwName='" + fwName + '\'' +
+                ", fachBereich='" + fachBereich + '\'' +
+                ", meldung='" + meldung + '\'' +
+                ", ort='" + ort + '\'' +
+                ", forces='" + forces + '\'' +
+                ", timestamp=" + timestamp +
+                ", active=" + active +
+                '}';
     }
 }

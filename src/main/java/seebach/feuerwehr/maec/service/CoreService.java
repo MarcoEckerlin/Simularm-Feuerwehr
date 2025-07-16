@@ -18,8 +18,8 @@ public class CoreService {
         coreRepository.save(core);
     }
 
-    public List<Core> getTime(LocalDateTime time) {
-        return coreRepository.findByTimestamp(time);
+    public List<Core> getTime() {
+        return coreRepository.findByTimestampBeforeAndActiveFalse(LocalDateTime.now());
     }
 
     public Optional<Core> getId(long id){

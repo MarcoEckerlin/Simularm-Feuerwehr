@@ -43,13 +43,6 @@ public class Alarm {
         AudioInputStream ttsAudio = maryTTS.generateAudio(text);
 
         playAudioStreamBlocking(ttsAudio);
-
-        Thread.sleep(15*1000);
-
-        playAudioFileBlocking(gongFile);
-
-        AudioInputStream ttsAudio2 = maryTTS.generateAudio(text);
-        playAudioStreamBlocking(ttsAudio2);
         return true;
     }
 
