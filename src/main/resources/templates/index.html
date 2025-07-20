@@ -45,7 +45,8 @@
                 <button onclick="openModal('create')" class="green">➕ Alarm erstellen</button>
             </section>
 
-            <!-- Durchsage machen -->
+            <div class="sec">
+                            <!-- Durchsage machen -->
             <section class="durchsage">
                 <h2>📢 Durchsage machen</h2>
                 <form th:action="@{/alarm/durchsage}" method="post">
@@ -60,6 +61,7 @@
                 <h2>⚙️ Einstellungen</h2>
                 <button onclick="openModal('settings')" class="green">Einstellungen öffnen</button>
             </section>
+            </div>
 
         </div>
 
@@ -70,11 +72,11 @@
         <section class="new-alarm hidden" id="create">
             <h2>➕ Neuen Alarm hinzufügen</h2>
             <form th:action="@{/alarm/add}" method="post">
-                <input type="text" name="fwName" placeholder="Feuerwehr Name" required />
+                <input type="text" name="fwName" placeholder="Feuerwehr Name" th:value="${settings['fw-name']}" required />
                 <input type="text" name="fachBereich" placeholder="Fachbereich" required />
                 <input type="text" name="meldung" placeholder="Meldung" required />
                 <input type="text" name="ort" placeholder="Ort" required />
-                <input type="text" name="forces" placeholder="Einsatzkräfte" required />
+                <input type="text" name="forces" placeholder="Einsatzkräfte" required th:value="${settings['fahrzeuge']}"/>
                 <input type="datetime-local" name="time" required />
                 <div class="bottom">
                     <button onclick="closeModal('create')" class="gray">❌Abbrechen</button>
@@ -110,8 +112,19 @@
         </section>
         <section class="settings hidden" id="settings">
             <h2>⚙️ Einstellungen</h2>
-            <form th:action="@{/alarm/settings}" method="post">
-                <input type="text" name="divera-api-key" placeholder="Divera-api-key" />
+            <form th:action="@{/alarm/setting}" method="post">
+                <label for="fw-name">Feuerwehrname:</label>
+                <input type="text" name="fw-name" placeholder="Feuerwehr Seebach" th:value="${settings['fw-name']}"/>
+                <label for="fahrzeuge">Fahrzeuge (Standart):</label>
+                <input type="text" name="fahrzeuge" placeholder="Feuerwehr Seebach" th:value="${settings['fahrzeuge']}"/>
+                <label for="divera-api-key">Divera24/7-ApiKey:</label>
+                <input type="text" name="divera-api-key" placeholder="Divera24/7-ApiKey" th:value="${settings['divera-api-key']}"/>
+                <label for="divera-api-ric">Divera24/7-Alarmierungs Gruppe:</label>
+                <input type="text" name="divera-api-ric" placeholder="Divera24/7-Alarmierungs Gruppe" th:value="${settings['divera-api-ric']}"/>
+                <label for="divera-sleeper">Divera24/7-Timeout bis Gong:</label>
+                <input type="text" name="divera-sleeper" placeholder="Divera24/7-Timeout bis Gong" th:value="${settings['divera-sleeper']}"/>
+                <label for="alarm-text">Alarm Text:</label>
+                <textarea name="alarm-text" placeholder="Einsatz für die  %feuerwehr%! %fachbereich%  %meldung%. Es fahren:  %fahrzeuge%" rows="5" th:text="${settings['alarm-text']}"></textarea>
                 <div class="bottom">
                     <button type="button" onclick="closeModal('settings')" class="gray">❌Abbrechen</button>
                     <button type="submit" onclick="closeModal('settings')" class="green">💾 Speichern</button>

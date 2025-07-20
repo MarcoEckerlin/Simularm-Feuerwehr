@@ -2,6 +2,10 @@ package seebach.feuerwehr.maec.obj;
 
 import marytts.LocalMaryInterface;
 import marytts.MaryInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.config.Task;
+import org.springframework.stereotype.Component;
+import seebach.feuerwehr.maec.service.SettingService;
 
 import javax.sound.sampled.*;
 import java.io.File;
@@ -11,26 +15,25 @@ import java.io.InputStream;
 import java.util.concurrent.CountDownLatch;
 
 
+@Component
 public class Alarm {
-    String fw_name;
-    String fach_bereich;
-    String meldung;
-    String forces;
 
-    public void setfw_name(String args){
-        this.fw_name = args;
-    }
-    public void setmeldung(String args){
-        this.meldung = args;
-    }
-    public void setfach_bereich(String args){
-        this.fach_bereich = (args.replaceAll("", " ").trim()).replace(".", "Punkt");
-    }
-    public void setforces(String args){
-        this.forces = args;
+    private final SettingService settingService;
+
+    @Autowired
+    public Alarm(SettingService settingService) {
+        this.settingService = settingService;
     }
 
-    public boolean run() throws Exception {
+    public boolean run(String fw_name, String fach_bereich, String meldung, String forces, String address, String id) throws Exception {
+
+        Divera divera = new Divera();
+        divera.run(settingService.getValue("divera-api-key"),settingService.getValue("divera-api-ric"), fw_name, fach_bereich, meldung, address, id);
+
+        long sleeper = 15000;
+        sleeper = Long.parseLong(settingService.getValue("divera-sleeper"));
+        Thread.sleep(sleeper);
+
         System.setProperty("mary.base", "./lib");
         MaryInterface maryTTS = new LocalMaryInterface();
         maryTTS.setVoice("bits1-hsmm");
@@ -38,7 +41,12 @@ public class Alarm {
         InputStream is = getClass().getClassLoader().getResourceAsStream("audio/gong.wav");
         playAudioFileBlocking(is);
 
-        String text = "Einsatz für die " + fw_name + "!" + fach_bereich + " " +  meldung + ". Es fahren: " + forces;
+        String textdb = settingService.getValue("alarm-text");
+        String text = textdb.replace("%feuerwehr%", fw_name)
+                .replace("%fachbereich%", fach_bereich.replaceAll("", " ").trim().replace(".", "Punkt"))
+                .replace("%meldung%", meldung)
+                .replace("%fahrzeuge%", forces);
+
         AudioInputStream ttsAudio = maryTTS.generateAudio(text);
 
         playAudioStreamBlocking(ttsAudio);
@@ -80,6 +88,4 @@ public class Alarm {
         latch.await();
         clip.close();
     }
-
-
 }

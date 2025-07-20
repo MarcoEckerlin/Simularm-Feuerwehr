@@ -3,28 +3,30 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Year;
+import java.util.Timer;
 
 public class Divera {
 
-        public static void main(String[] args) throws Exception {
-            String apiKey = "DEIN_API_KEY_HIER";  // Ersetze mit deinem echten Token
+        public void run(String apikey, String ric, String fw_name, String fach_bereich, String meldung, String address, String id) throws Exception {
 
             String jsonBody = """
             {
-              "number": "2025-00001",
+              "number": "%id%",
               "priority": true,
-              "title": "Probealarm Lagerhalle",
-              "text": "Test.",
-              "address": "Teststraße 12, 54321 Beispielstadt",
-              "lat": 50.123456,
-              "lng": 8.654321
+              "title": "%title%",
+              "text": "BF-TAG Alarm %fw%",
+              "address": "%address%",
+              "lat": 48.57723753961227,
+              "lng": 8.17681648666783,
+              "ric": "%ric%"
             }
-            """;
+            """.replace("%id%", Year.now().getValue() + "000" +  id).replace("%title%", fach_bereich + " - " + meldung).replace("%fw%", fw_name).replace("%address%", address).replace("%ric%", ric);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://app.divera247.com/api/alarm"))
+                    .uri(URI.create("https://webhook.site/f35f1089-345b-438e-9151-c885af0549d3"))
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + apiKey)
+                    .header("Authorization", "Bearer " + apikey)
                     .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
                     .build();
 

@@ -15,33 +15,32 @@ import java.util.List;
 @Component
 public class Scheduler {
 
+    private final Alarm alarm;
+    private final CoreService coreService;
+
     @Autowired
-    private CoreService coreService;
+    public Scheduler(Alarm alarm, CoreService coreService) {
+        this.alarm = alarm;
+        this.coreService = coreService;
+    }
 
-
-    @Scheduled(fixedRate = 1000)  // alle 5 Sekunden
+    @Scheduled(fixedRate = 1000)
     public void checkAlarms() {
         List<Core> activeAlarms = coreService.getTime();
         if (!activeAlarms.isEmpty()) {
-            activeAlarms.forEach(alarm -> {
-                System.out.println("✅ Bearbeite Alarm: " + alarm.getId());
-
-                Alarm tts = new Alarm();
-                tts.setfach_bereich(alarm.getFachBereich());
-                tts.setforces(alarm.getForces());
-                tts.setfw_name(alarm.getFwName());
-                tts.setmeldung(alarm.getMeldung());
-
+            activeAlarms.forEach(coreAlarm -> {
+                System.out.println("✅ Bearbeite Alarm: " + coreAlarm.getId());
                 try {
-                    tts.run();
-                    System.out.println("✅ Erfolgreich bei TTS: " + alarm.getId());
+                    alarm.run(coreAlarm.getFwName(), coreAlarm.getFachBereich(), coreAlarm.getMeldung(), coreAlarm.getForces(), coreAlarm.getOrt(), String.valueOf(coreAlarm.getId()));
+                    System.out.println("✅ Alarm wurde bearbeitet.");
                 } catch (Exception e) {
-                    System.out.println("❌ Fehler bei TTS: " + alarm.getId());
+                    System.out.println("❌ Fehler beim Bearbeiten des Alarms:");
                     e.printStackTrace();
                 }
-                alarm.setActive(true);
-                coreService.save(alarm);
+                coreAlarm.setActive(true);
+                coreService.save(coreAlarm);
             });
         }
     }
 }
+

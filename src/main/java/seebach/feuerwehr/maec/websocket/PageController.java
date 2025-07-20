@@ -1,30 +1,40 @@
 package seebach.feuerwehr.maec.websocket;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import seebach.feuerwehr.maec.obj.Alarm;
 import seebach.feuerwehr.maec.obj.Durchsage;
 import seebach.feuerwehr.maec.service.Core;
 import seebach.feuerwehr.maec.service.CoreService;
+import seebach.feuerwehr.maec.obj.Setting;
+import seebach.feuerwehr.maec.service.SettingService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class PageController {
+    private final CoreService coreService;
+    private final SettingService settingService;
+
     @Autowired
-    private CoreService coreService;
+    public PageController(CoreService coreService, SettingService settingService) {
+        this.coreService = coreService;
+        this.settingService = settingService;
+    }
 
     @GetMapping("/")
     public String index(Model model) {
         List<Core> alarms = coreService.getAll();
-
+        Map<String, String> settingsMap = settingService.getAllSettings()
+                .stream()
+                .collect(Collectors.toMap(Setting::getSetting, Setting::getValue));
         model.addAttribute("alarms", alarms);
+        model.addAttribute("settings", settingsMap);
         return "index";
     }
 
@@ -84,6 +94,12 @@ public class PageController {
         }
         return "redirect:/";
 
+    }
+
+    @PostMapping("/alarm/setting")
+    public String saveSettings(@RequestParam Map<String, String> params) {
+        params.forEach(settingService::saveSetting);
+        return "redirect:/";
     }
 
 

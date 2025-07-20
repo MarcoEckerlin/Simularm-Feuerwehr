@@ -30,11 +30,20 @@ body {
 
 .main {
     width: 100%;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    grid-template-rows: auto auto 1fr;
+    display: flex;
+    align-items: start;
+    justify-content: center;
     gap: 10px;
+    flex-direction: row;
     height: calc(900px - 80px); /* ca. abzüglich header + padding */
+}
+
+.sec{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: column;
+    gap: 10px;
 }
 /* content */
 
@@ -153,6 +162,13 @@ form textarea {
     margin-right: 1vh;
 }
 
+form label{
+    width: calc(100% - 20px - 2vh);
+    color: white;
+    margin-left: 1vh;
+    margin-right: 1vh;
+}
+
 button {
     width: calc(100% - 2vh);
     padding: 10px;
@@ -221,6 +237,5 @@ p {
 }
 
 .blocked {
-    opacity: 0.5;
-    pointer-events: none;
+    filter: grayscale(0.5)
 }
