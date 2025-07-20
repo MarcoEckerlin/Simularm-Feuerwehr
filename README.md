@@ -66,7 +66,7 @@ http://localhost:80 <- den port deiner Wahl ( mit --port= festgelegt)
 | Task                 | Command                                        |
 |----------------------|------------------------------------------------|
 | Run Jar direkt      | `java -jar Simularm-Feuerwehr-1.0.jar`        |
-| Mit Port und GUI    | `java -jar Simularm-Feuerwehr-1.0.jar --port=80` |
+| Mit Port    | `java -jar Simularm-Feuerwehr-1.0.jar --port=80` |
 
 ---
 
