@@ -67,7 +67,7 @@ header p {
 section {
     background-color: rgb(30 41 59 / var(--tw-bg-opacity, 1));
     border-radius: 1.5vh;
-    width: 300px;
+    width: 350px;
     padding-bottom: 1vh;
 }
 
@@ -85,8 +85,6 @@ section h2 {
 }
 
 .alarms{
-    grid-column: 1 / 2;
-    grid-row: 1 / 4;
     overflow-y: auto;
 }
 
@@ -111,6 +109,12 @@ section h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transform: scale(0.95);
+    transition: all 0.3s;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+.alarm-item:hover{
+    transform: scale(1);
 }
 
 .alarm-info {
@@ -162,6 +166,13 @@ form textarea {
     margin-right: 1vh;
 }
 
+form input:focus,
+form textarea:focus{
+    outline: none;
+    border-bottom: 3px solid rgb(239 68 68 / var(--tw-text-opacity, 1));
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
 form label{
     width: calc(100% - 20px - 2vh);
     color: white;
@@ -181,10 +192,12 @@ button {
     cursor: pointer;
     margin-left: 1vh;
     margin-right: 1vh;
+    transition: all 0.3s;
 }
 
 button:hover {
-    filter: brightness(0.9);
+    transform: scale(0.99);
+    filter: invert(0.25);
 }
 
 
@@ -226,16 +239,37 @@ p {
     margin: 0;
 }
 
-.durchsage{
-    grid-column: 2 / 3;
-    grid-row: 1 / 3;
+
+.blocked .alarm-info{
+    user-select: none;
+    filter: grayscale(1)
 }
 
-.settings{
-    grid-column: 2 / 3;
-    grid-row: 3 / 4;
+.blocked .alarm-actions .edit{
+    display: none;
 }
 
-.blocked {
-    filter: grayscale(0.5)
+.durchsage form textarea{
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+
+.timer{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+    padding: 3vh;
+}
+
+.clock{
+    font-size: xx-large;
+    font-weight: bolder;
+    color: white;
+}
+.date{
+    font-size: large;
+    color: white;
 }

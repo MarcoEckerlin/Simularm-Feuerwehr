@@ -14,12 +14,18 @@
             <p>Einsatzleitsystem für Feuerwehr-Simulationen</p>
         </header>
 
+        <div class="timer">
+            <span class="clock" id="clock"></span>
+            <span class="date" id="date"></span>
+        </div>
+
         <!-- Kommende Alarme -->
         <div class="main">
             <section class="alarms">
                 <h2>🚨 Kommende Alarme</h2>
                 <div class="alarm-list" th:if="${alarms}">
-                    <div class="alarm-item" th:each="alarm : ${alarms}" th:data-id="${alarm.id}" th:data-active="${alarm.active}">
+                    <div class="alarm-item" th:each="alarm : ${alarms}" th:data-id="${alarm.id}"
+                        th:data-active="${alarm.active}">
                         <div class="alarm-info">
                             <div>
                                 <strong th:text="${alarm.fachBereich}">Fachbereich</strong> -
@@ -37,8 +43,10 @@
                             </div>
                         </div>
                         <div class="alarm-actions">
-                            <button class="edit orange" type="button" th:data-id="${alarm.id}" onclick="loadAlarmData(this.getAttribute('data-id'))">✏️</button>
-                            <button class="delete red" type="button" th:data-id="${alarm.id}" onclick="openModal('delete', this.getAttribute('data-id'))">🗑️</button>
+                            <button class="edit orange" type="button" th:data-id="${alarm.id}"
+                                onclick="loadAlarmData(this.getAttribute('data-id'))">✏️</button>
+                            <button class="delete red" type="button" th:data-id="${alarm.id}"
+                                onclick="openModal('delete', this.getAttribute('data-id'))">🗑️</button>
                         </div>
                     </div>
                 </div>
@@ -46,21 +54,21 @@
             </section>
 
             <div class="sec">
-                            <!-- Durchsage machen -->
-            <section class="durchsage">
-                <h2>📢 Durchsage machen</h2>
-                <form th:action="@{/alarm/durchsage}" method="post">
-                    <textarea name="message" placeholder="Durchsage hier eintippen ..." cols="40" rows="15"
-                        required></textarea>
-                    <button type="submit" class="green">📩 Senden</button>
-                </form>
-            </section>
+                <!-- Durchsage machen -->
+                <section class="durchsage">
+                    <h2>📢 Durchsage machen</h2>
+                    <form th:action="@{/alarm/durchsage}" method="post">
+                        <textarea name="message" placeholder="Durchsage hier eintippen ..." cols="40" rows="15"
+                            required></textarea>
+                        <button type="submit" class="green">📩 Senden</button>
+                    </form>
+                </section>
 
-            <!-- Einstellungen -->
-            <section class="settings">
-                <h2>⚙️ Einstellungen</h2>
-                <button onclick="openModal('settings')" class="green">Einstellungen öffnen</button>
-            </section>
+                <!-- Einstellungen -->
+                <section class="settings">
+                    <h2>⚙️ Einstellungen</h2>
+                    <button onclick="openModal('settings')" class="green">⚙️ Einstellungen öffnen</button>
+                </section>
             </div>
 
         </div>
@@ -72,14 +80,16 @@
         <section class="new-alarm hidden" id="create">
             <h2>➕ Neuen Alarm hinzufügen</h2>
             <form th:action="@{/alarm/add}" method="post">
-                <input type="text" name="fwName" placeholder="Feuerwehr Name" th:value="${settings['fw-name']}" required />
+                <input type="text" name="fwName" placeholder="Feuerwehr Name" th:value="${settings['fw-name']}"
+                    required />
                 <input type="text" name="fachBereich" placeholder="Fachbereich" required />
                 <input type="text" name="meldung" placeholder="Meldung" required />
                 <input type="text" name="ort" placeholder="Ort" required />
-                <input type="text" name="forces" placeholder="Einsatzkräfte" required th:value="${settings['fahrzeuge']}"/>
+                <input type="text" name="forces" placeholder="Einsatzkräfte" required
+                    th:value="${settings['fahrzeuge']}" />
                 <input type="datetime-local" name="time" required />
                 <div class="bottom">
-                    <button onclick="closeModal('create')" class="gray">❌Abbrechen</button>
+                    <button type="button" onclick="closeModal('create')" class="gray">❌Abbrechen</button>
                     <button type="submit" onclick="closeModal('create')" class="green">✅ Erstellen</button>
                 </div>
             </form>
@@ -101,7 +111,7 @@
             </form>
         </section>
         <section class="delete-alarm hidden" id="delete">
-            <h2>🗑️ Alarm löschen </h2>
+            <h2>🗑️ Alarm löschen ?</h2>
             <form th:action="@{/alarm/delete}" method="post">
                 <input type="hidden" name="id" id="delete-id">
                 <div class="bottom">
@@ -114,17 +124,23 @@
             <h2>⚙️ Einstellungen</h2>
             <form th:action="@{/alarm/setting}" method="post">
                 <label for="fw-name">Feuerwehrname:</label>
-                <input type="text" name="fw-name" placeholder="Feuerwehr Seebach" th:value="${settings['fw-name']}"/>
+                <input type="text" name="fw-name" placeholder="Feuerwehr Seebach" th:value="${settings['fw-name']}" />
                 <label for="fahrzeuge">Fahrzeuge (Standart):</label>
-                <input type="text" name="fahrzeuge" placeholder="Feuerwehr Seebach" th:value="${settings['fahrzeuge']}"/>
+                <input type="text" name="fahrzeuge" placeholder="Feuerwehr Seebach"
+                    th:value="${settings['fahrzeuge']}" />
                 <label for="divera-api-key">Divera24/7-ApiKey:</label>
-                <input type="text" name="divera-api-key" placeholder="Divera24/7-ApiKey" th:value="${settings['divera-api-key']}"/>
+                <input type="text" name="divera-api-key" placeholder="Divera24/7-ApiKey"
+                    th:value="${settings['divera-api-key']}" />
                 <label for="divera-api-ric">Divera24/7-Alarmierungs Gruppe:</label>
-                <input type="text" name="divera-api-ric" placeholder="Divera24/7-Alarmierungs Gruppe" th:value="${settings['divera-api-ric']}"/>
-                <label for="divera-sleeper">Divera24/7-Timeout bis Gong:</label>
-                <input type="text" name="divera-sleeper" placeholder="Divera24/7-Timeout bis Gong" th:value="${settings['divera-sleeper']}"/>
+                <input type="text" name="divera-api-ric" placeholder="Divera24/7-Alarmierungs Gruppe"
+                    th:value="${settings['divera-api-ric']}" />
+                <label for="divera-sleeper">Divera24/7-Timeout bis Gong (in ms):</label>
+                <input type="text" name="divera-sleeper" placeholder="Divera24/7-Timeout bis Gong"
+                    th:value="${settings['divera-sleeper']}" />
                 <label for="alarm-text">Alarm Text:</label>
-                <textarea name="alarm-text" placeholder="Einsatz für die  %feuerwehr%! %fachbereich%  %meldung%. Es fahren:  %fahrzeuge%" rows="5" th:text="${settings['alarm-text']}"></textarea>
+                <textarea name="alarm-text"
+                    placeholder="Einsatz für die  %feuerwehr%! %fachbereich%  %meldung%. Es fahren:  %fahrzeuge%"
+                    rows="5" th:text="${settings['alarm-text']}"></textarea>
                 <div class="bottom">
                     <button type="button" onclick="closeModal('settings')" class="gray">❌Abbrechen</button>
                     <button type="submit" onclick="closeModal('settings')" class="green">💾 Speichern</button>
@@ -134,6 +150,19 @@
     </div>
 </body>
 <script>
+    setInterval(() => {
+        const date = new Date();
+        let year = date.getFullYear();
+        let month = String(date.getMonth() + 1).padStart(2, '0');  // +1, weil getMonth() 0-basiert ist
+        let day = String(date.getDate()).padStart(2, '0');
+        let hour = String(date.getHours()).padStart(2, '0');
+        let min = String(date.getMinutes()).padStart(2, '0');
+        let sec = String(date.getSeconds()).padStart(2, '0');
+
+        document.getElementById('clock').innerText = `${hour}:${min}:${sec} Uhr`;
+        document.getElementById('date').innerText = `${day}.${month}.${year}`;
+    }, 1000);
+
     setInterval(() => {
         const alarmItems = document.querySelectorAll('.alarm-item');
         alarmItems.forEach(div => {

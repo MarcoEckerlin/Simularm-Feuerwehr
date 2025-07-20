@@ -3,43 +3,44 @@ package seebach.feuerwehr.maec;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import seebach.feuerwehr.maec.obj.Alarm;
 import seebach.feuerwehr.maec.obj.Durchsage;
-import seebach.feuerwehr.maec.obj.GUI;
 
-import javax.swing.*;
-import java.util.Arrays;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
 
 @SpringBootApplication
 @EnableScheduling
 public class Main {
 
+    static String port;
+
     public static void main(String[] args) throws Exception {
-        if (Arrays.asList(args).contains("--gui")) {
-//            SwingUtilities.invokeLater(() -> new GUI());
-            if (System.getProperty("spring.devtools.restart.enabled") == null ||
-                    Boolean.getBoolean("spring.devtools.restart.enabled")) {
-                if (!isRestartThread()) {
-                    SwingUtilities.invokeLater(() -> {
-                        new GUI();
-                    });
+        String portValue = null;
+
+        for (String arg : args) {
+            if (arg.startsWith("--port=")) {
+                String value = arg.split("=", 2)[1];
+                if (!value.isBlank()) {
+                    portValue = value;
+                    break;
                 }
             }
         }
 
-        for (String arg : args) {
-            if (arg.startsWith("--port=")) {
-                String portValue = arg.split("=")[1];
-                System.setProperty("server.port", portValue);
-            }
+        if (portValue == null) {
+            portValue = "80";
         }
 
+        System.setProperty("server.port", portValue);
         SpringApplication.run(Main.class, args);
 
-        // Standard Information und Test des System
-        Durchsage durchsage = new Durchsage();
-        durchsage.senden("Information, das Melde System ist gestartet und bereit!");
-
+        System.out.println("=================================================================================");
+        System.out.println("\n");
+        System.out.println("Öffne die AlarmWebseite mit: http://localhost:" + portValue + "/");
+        System.out.println("\n");
+        System.out.println("=================================================================================");
+        System.out.println("by Eckerlin Developments | made for Feuerwehr Seebach, Baden-Würtenberg, Germany");
     }
     private static boolean isRestartThread() {
         // check ob im DevTools Restart-Thread

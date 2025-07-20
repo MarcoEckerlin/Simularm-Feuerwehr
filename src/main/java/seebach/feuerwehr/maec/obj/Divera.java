@@ -24,7 +24,7 @@ public class Divera {
             """.replace("%id%", Year.now().getValue() + "000" +  id).replace("%title%", fach_bereich + " - " + meldung).replace("%fw%", fw_name).replace("%address%", address).replace("%ric%", ric);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://webhook.site/f35f1089-345b-438e-9151-c885af0549d3"))
+                    .uri(URI.create("https://app.divera247.com/api/alarm"))
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + apikey)
                     .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
