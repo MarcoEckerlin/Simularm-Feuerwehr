@@ -2,7 +2,6 @@
 
 **Einsatzleitsystem für Feuerwehr-Simulationen – powered by Spring Boot + Thymeleaf**
 
-> 🛠️ **Entwickelt von:** Marco aka das IT-Genie  
 > 💥 **Version:** 1.0
 
 ---
@@ -48,12 +47,6 @@ Oder per Konsole:
 java -jar Simularm-Feuerwehr-1.0.jar
 ```
 
-Optional mit Parametern:
-
-```bash
-java -jar Simularm-Feuerwehr-1.0.jar --port=80 --gui
-```
-
 ---
 
 ## 🌐 Anwendung öffnen
@@ -73,7 +66,7 @@ http://localhost:80 <- den port deiner Wahl ( mit --port= festgelegt)
 | Task                 | Command                                        |
 |----------------------|------------------------------------------------|
 | Run Jar direkt      | `java -jar Simularm-Feuerwehr-1.0.jar`        |
-| Mit Port und GUI    | `java -jar Simularm-Feuerwehr-1.0.jar --port=80 --gui` |
+| Mit Port und GUI    | `java -jar Simularm-Feuerwehr-1.0.jar --port=80` |
 
 ---
 
