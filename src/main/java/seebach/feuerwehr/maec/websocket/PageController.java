@@ -68,11 +68,11 @@ public class PageController {
 
     @PostMapping("/alarm/edit")
     public String editAlarm(@RequestParam String fwName,
-                           @RequestParam String fachBereich,
-                           @RequestParam String meldung,
-                           @RequestParam String ort,
-                           @RequestParam String forces,
-                           @RequestParam String time,
+                            @RequestParam String fachBereich,
+                            @RequestParam String meldung,
+                            @RequestParam String ort,
+                            @RequestParam String forces,
+                            @RequestParam String time,
                             @RequestParam String id) {
         LocalDateTime alarmTime = LocalDateTime.parse(time);
         Core core = new Core(fwName, fachBereich, meldung, ort, forces, alarmTime);

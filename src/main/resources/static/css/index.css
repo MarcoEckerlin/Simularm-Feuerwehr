@@ -33,9 +33,9 @@ body {
     display: flex;
     align-items: start;
     justify-content: center;
-    gap: 10px;
+    gap: 20px;
     flex-direction: row;
-    height: calc(900px - 80px); /* ca. abzüglich header + padding */
+    height: 25%; 
 }
 
 .sec{
@@ -43,7 +43,7 @@ body {
     align-items: center;
     justify-content: start;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
 }
 /* content */
 
@@ -72,6 +72,7 @@ section {
 }
 
 section h2 {
+    user-select: none;
     margin-top: 0px;
     font-size: 1.5em;
     margin-bottom: 10px;
@@ -90,11 +91,11 @@ section h2 {
 
 
 .alarm-list {
+    height: 50vh;
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-bottom: 1vh;
-    height: 660px;
     overflow-y: scroll;
 }
 
@@ -178,6 +179,7 @@ form label{
     color: white;
     margin-left: 1vh;
     margin-right: 1vh;
+    user-select: none;
 }
 
 button {
@@ -254,6 +256,7 @@ p {
 }
 
 .timer{
+    user-select: none;
     position: absolute;
     top: 0px;
     left: 0px;

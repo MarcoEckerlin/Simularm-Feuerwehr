@@ -37,19 +37,27 @@ public class Alarm {
         System.setProperty("mary.base", "./lib");
         MaryInterface maryTTS = new LocalMaryInterface();
         maryTTS.setVoice("bits1-hsmm");
-
-        InputStream is = getClass().getClassLoader().getResourceAsStream("audio/gong.wav");
-        playAudioFileBlocking(is);
-
         String textdb = settingService.getValue("alarm-text");
         String text = textdb.replace("%feuerwehr%", fw_name)
                 .replace("%fachbereich%", fach_bereich.replaceAll("", " ").trim().replace(".", "Punkt"))
                 .replace("%meldung%", meldung)
-                .replace("%fahrzeuge%", forces);
+                .replace("%fahrzeuge%", forces)
+                .replace("%ort%", address.replace(">" , " "));
 
         AudioInputStream ttsAudio = maryTTS.generateAudio(text);
+        AudioInputStream ttsAudio2 = maryTTS.generateAudio(text);
 
+        InputStream fs = getClass().getClassLoader().getResourceAsStream("audio/gong.wav");
+
+        playAudioFileBlocking(fs);
         playAudioStreamBlocking(ttsAudio);
+
+        Thread.sleep(sleeper);
+        InputStream se = getClass().getClassLoader().getResourceAsStream("audio/gong.wav");
+
+        playAudioFileBlocking(se);
+        playAudioStreamBlocking(ttsAudio2);
+
         return true;
     }
 
@@ -87,5 +95,6 @@ public class Alarm {
         clip.start();
         latch.await();
         clip.close();
+
     }
 }
